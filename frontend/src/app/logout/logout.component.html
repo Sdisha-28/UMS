@@ -1,0 +1,9 @@
+<div class="logout-overlay">
+    <div class="logout-dialog">
+      <h2>Are you sure you want to logout?</h2>
+      <div class="dialog-buttons">
+        <button (click)="confirmLogout()" class="btn btn-danger">Yes, Logout</button>
+        <button [routerLink]="['/home']" class="btn btn-secondary">Cancel</button>
+      </div>
+    </div>
+  </div>

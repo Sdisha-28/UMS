@@ -95,6 +95,7 @@ import { RegisterService } from './register.service';
 export class RegisterComponent implements OnInit {
   email: string = '';
   name: string = '';
+  dob: string='';
   phone: string = '';
   password: string = '';
   confirmPassword: string = '';
@@ -113,6 +114,7 @@ export class RegisterComponent implements OnInit {
     const user = {
       email: this.email,
       name: this.name,
+      dob: this.dob,
       phone: this.phone,
       password: this.password,
       confirmPassword: this.confirmPassword,
@@ -123,12 +125,18 @@ export class RegisterComponent implements OnInit {
 
     this.registerService.register(user).subscribe({
       next: (response) => {
-        this.message = 'User registered successfully';
+        this.message = response.message;
         this.error = '';
       },
       error: (error) => {
         this.message = '';
-        this.error = error.error.detail || 'Error registering user';
+        if (error.status === 400 && error.error.detail === "Passwords do not match") {
+          this.error = "Passwords do not match";
+        } else if (error.status === 409 ) {
+          this.error = "User already exists";
+        } else {
+          this.error = error.error.detail || 'Error registering user';
+        }
       },
       complete: () => {
         console.log('Registration request completed');

@@ -1,0 +1,51 @@
+.container-fluid {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .row {
+    width: 100%;
+  }
+  
+  .sidebar {
+    background-color: #f8f9fa;
+    height: 100vh;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .profile-button, .other-settings-button {
+    width: 100%;
+    margin-bottom: 10px;
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .profile-button:hover, .other-settings-button:hover {
+    background-color: #0056b3;
+  }
+  
+  .content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .router-outlet {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  

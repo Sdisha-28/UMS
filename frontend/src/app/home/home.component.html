@@ -1,56 +1,4 @@
-<!-- <p>home page</p>
-<div class="container">
-    <div class="header">
-        <div class="logo">
-            <img src="home-icon.png" alt="Home Icon">
-        </div>
-        <div class="search-bar">
-            <input type="text" placeholder="Search...">
-            <button>Search</button>
-        </div>
-        <div class="profile">
-            <img src="profile-icon.png" alt="Profile Icon">
-        </div>
-    </div>
-    <div class="sidebar">
-        <div class="panel">
-            <button class="manage-user-button">Manage Users</button>
-            <button class="security-button">Security</button>
-        </div>
-    </div>
-    <div class="content">
-        
-    </div>
-</div> --> 
-<!-- 
-<div class="container">
-    <div class="header">
-        <div class="logo">
-            <img src="home-icon.png" alt="Home Icon">
-        </div>
-        <div class="search-bar">
-            <input type="text" placeholder="Search...">
-            <button>Search</button>
-        </div>
-        <div class="profile">
-            <img src="profile-icon.png" alt="Profile Icon">
-            <div class="profile-dropdown">
-                <a href="#">Settings</a>
-                <a href="#">Logout</a>
-            </div>
-        </div>
-    </div>
-    <div class="sidebar">
-        <div class="panel">
-            <button class="manage-user-button">Manage Users</button>
-            <button class="security-button">Security</button>
-            <button class="general-settings-button">General Settings</button>
-        </div>
-    </div>
-    <div class="content">
-        
-    </div>
-</div> -->
+
 
 <div class="container-fluid">
     <div class="row">
@@ -62,10 +10,14 @@
                 <input type="text" class="form-control" placeholder="Search...">
             </div>
             <div class="profile">
-                <img src="assets/profile-icon.png" alt="Profile Icon" class="profile-icon">
+                <img src="assets/account.png" alt="Profile Icon" class="profile-icon">
+                <div class="profile-name">
+                    {{ username }}
+                </div>
+                
                 <div class="profile-dropdown">
-                    <a href="#">Settings</a>
-                    <a href="#">Logout</a>
+                    <a [routerLink]="['/settings']">Settings</a>
+                    <a [routerLink]="['/logout']">Logout</a>
                 </div>
             </div>
         </div>
@@ -73,9 +25,9 @@
     <div class="row">
         <div class="col-2 sidebar">
             <div class="panel">
-                <button class="btn btn-primary manage-user-button">Manage Users</button>
-                <button class="btn btn-secondary security-button">Security</button>
-                <button class="btn btn-success general-settings-button">General Settings</button>
+                <button class="btn btn-primary manage-user-button" (click)="navigateToManageUsers()">Manage Users</button>
+                <button class="btn btn-secondary security-button" (click)="navigateToSecurity()">Security</button>
+                <button class="btn btn-success general-settings-button" (click)="navigateToGeneralSettings()">General Settings</button>
             </div>
         </div>
         <div class="col-10 content">

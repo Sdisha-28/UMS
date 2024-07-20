@@ -1,1 +1,35 @@
-<p>manage-users works!</p>
+<div class="container">
+    <div class="row">
+      <div class="col-12">
+        <h2>Manage Users</h2>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Emp ID</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>City</th>
+              <th>Gender</th>
+              <th>DOB</th>
+              <th>Phone</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let user of users">
+              <td>{{ user.emp_id }}</td>
+              <td>{{ user.name }}</td>
+              <td>{{ user.email }}</td>
+              <td>{{ user.role }}</td>
+              <td>{{ user.city }}</td>
+              <td>{{ user.gender }}</td>
+              <td>{{ user.dob }}</td>
+              <td>{{ user.phone }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <button class="btn btn-primary" (click)="loadMoreUsers()">Load More</button>
+      </div>
+    </div>
+  </div>
+  

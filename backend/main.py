@@ -187,3 +187,16 @@ async def update_user(
             raise HTTPException(status_code=update_response.status_code, detail=update_response.text)
 
     return {"message": "Profile updated successfully"}
+
+
+@app.get("/users")
+async def get_users(offset: int = 0, limit: int = 100):
+    async with httpx.AsyncClient() as client:
+        response = await client.get(
+            f"{SUPABASE_URL}/rest/v1/users?offset={offset}&limit={limit}",
+            headers=headers
+        )
+    if response.status_code != 200:
+        raise HTTPException(status_code=response.status_code, detail=response.text)
+
+    return response.json()

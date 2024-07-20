@@ -1,19 +1,24 @@
-.sidebar {
+
+.container-fluid {
+    padding: 0;
+  }
+  
+  .row {
+    margin: 0;
+  }
+  
+  .sidebar {
     background-color: #f8f9fa;
-    padding: 10px;
-    border-right: 1px solid #dee2e6;
     height: 100vh;
-}
-
-.panel {
-    display: flex;
-    flex-direction: column;
-}
-
-.panel .btn {
-    margin: 10px 0;
-}
-
-.content {
+  }
+  
+  .profile-button,
+  .other-settings-button {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  
+  .content {
     padding: 20px;
-}
+  }
+  

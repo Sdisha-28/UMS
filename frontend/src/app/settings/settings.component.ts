@@ -14,8 +14,7 @@ export class SettingsComponent implements OnInit {
   }
 
   navigateToProfile() {
-    // Implement the navigation logic here
-    this.router.navigate(['settings/profile']);
+    this.router.navigate(['/settings/profile']);
   }
 
   navigateToOtherSettings() {

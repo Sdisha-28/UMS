@@ -12,6 +12,7 @@ import { SecurityComponent } from './security/security.component';
 import { GeneralSettingsComponent } from './general-settings/general-settings.component';
 import { LogoutComponent } from './logout/logout.component';
 import { SettingsComponent } from './settings/settings.component';
+import { ProfileComponent } from './settings/profile/profile.component';
 
 
 
@@ -25,7 +26,8 @@ import { SettingsComponent } from './settings/settings.component';
     SecurityComponent,
     GeneralSettingsComponent,
     LogoutComponent,
-    SettingsComponent
+    SettingsComponent,
+    ProfileComponent
    
   ],
   imports: [

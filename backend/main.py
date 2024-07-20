@@ -1,13 +1,11 @@
-
 from fastapi import Depends, FastAPI, File, Form, HTTPException, UploadFile
-from fastapi.security import OAuth2PasswordBearer
-
-
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from typing import Optional
+from typing import Dict, Optional
 import httpx
+import base64
 from passlib.context import CryptContext
+from supabase import create_client, Client
 
 app = FastAPI()
 
@@ -29,10 +27,12 @@ SUPABASE_URL = 'https://aeqgqtfgftsuupcszxup.supabase.co'
 SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFlcWdxdGZnZnRzdXVwY3N6eHVwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTkwODAwNjUsImV4cCI6MjAzNDY1NjA2NX0.KrDod4FlhAnYF6glH7Uh-FpY3d5drhuhGGzKKWr29vA'
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 #oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+#supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
+
 class User(BaseModel):
     email: str
     name: str
-    dob: str
+    dob: Optional[str]
     phone: str
     password: str
     confirmPassword: str
@@ -111,3 +111,79 @@ async def logout():
     # For example, invalidate user sessions or tokens if applicable
     return {"message": "Logged out successfully"}
 
+
+# Database connection
+supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
+headers = {
+    "apikey": SUPABASE_KEY,
+    "Authorization": f"Bearer {SUPABASE_KEY}"
+}
+
+
+
+@app.get("/users/{email}/profiledetails", response_model=Dict)
+async def get_full_profile(email: str):
+    async with httpx.AsyncClient() as client:
+        # Fetch user data
+        user_response = await client.get(f"{SUPABASE_URL}/rest/v1/users?email=eq.{email}", headers=headers)
+        if user_response.status_code != 200:
+            raise HTTPException(status_code=user_response.status_code, detail=user_response.text)
+        
+        user_data = user_response.json()
+        if not user_data:
+            raise HTTPException(status_code=404, detail="User not found")
+        
+        user_info = user_data[0]  # Supabase returns a list of results
+        
+        return user_info
+
+class UserUpdateModel(BaseModel):
+    city: Optional[str]
+    phone: Optional[str]
+    role: Optional[str]
+    dob: Optional[str]
+
+@app.put("/users/{email}")
+async def update_user(
+    email: str,
+    city: Optional[str] = Form(None),
+    phone: Optional[str] = Form(None),
+    role: Optional[str] = Form(None),
+    dob: Optional[str] = Form(None),
+):
+    # Fetch existing user data
+    async with httpx.AsyncClient() as client:
+        user_response = await client.get(
+            f"{SUPABASE_URL}/rest/v1/users?email=eq.{email}",
+            headers=headers
+        )
+        if user_response.status_code != 200:
+            raise HTTPException(status_code=user_response.status_code, detail=user_response.text)
+        
+        user_data = user_response.json()
+        if not user_data:
+            raise HTTPException(status_code=404, detail="User not found")
+        
+        user_data = user_data[0]
+        print(user_data )
+    # Update the user data with provided fields
+    if city is not None:
+        user_data['city'] = city
+    if phone is not None:
+        user_data['phone'] = phone
+    if role is not None:
+        user_data['role'] = role
+    if dob is not None:
+        user_data['dob'] = dob
+    print(user_data)
+    # Send updated data to Supabase
+    async with httpx.AsyncClient() as client:
+        update_response = await client.patch(
+            f"{SUPABASE_URL}/rest/v1/users?email=eq.{email}",
+            headers=headers,
+            json=user_data
+        )
+        if update_response.status_code != 204:
+            raise HTTPException(status_code=update_response.status_code, detail=update_response.text)
+
+    return {"message": "Profile updated successfully"}
